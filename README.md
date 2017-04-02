@@ -18,4 +18,5 @@ hosts.isitup
 
 ### ToDo:
 - hosts should be able to get a name
+- multiple receivers
 - ..? 
