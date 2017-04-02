@@ -11,7 +11,8 @@ Usage of ./isitup:
   -logfile string
     	Sets the location of the logfile. (default "./isitup.log")
   -servicefile string
-    	Sets the location of the service file (default "./service.isitup")
+    	Sets the location of the service file - WARNING: Overrides the Setting in the config file. (default "./service.isitup")
+
 
 ```
 
