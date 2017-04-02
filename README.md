@@ -11,6 +11,7 @@ hosts.isitup
 - Enter IP Adress as well as the Port, line after line
 
 ## Example:
-`192.168.0.100:80
-
-8.8.8.8:53`
+```
+192.168.0.100:80
+8.8.8.8:53
+```
