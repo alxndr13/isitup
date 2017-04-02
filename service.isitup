@@ -1,2 +1,3 @@
-192.168.0.100:80-Camera
-192.168.0.70:80-SSH Arch
+# Comment
+192.168.0.100:80-Test
+192.168.0.70:80-local Webserver
