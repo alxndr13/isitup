@@ -82,8 +82,12 @@ func send_message(mes string) {
 	if err != nil {
 		Error.Println("couldnt send Message to Telegram.")
 	} else {
-		Info.Println("Send Message to: " + receiver)
-		Info.Println("Response: " + res.Status)
+		if res.StatusCode != 200 {
+			Warning.Println("Could not send message. Status Code: " + res.Status)
+		} else {
+			Info.Println("Send Message to: " + receiver)
+		}
+
 	}
 
 }
