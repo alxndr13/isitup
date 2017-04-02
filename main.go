@@ -41,7 +41,7 @@ func main() {
 func init_flags() {
 	// All that command line arguments
 	logPtr := flag.String("logfile", "./isitup.log", "Sets the location of the logfile.")
-	svcPtr := flag.String("servicefile", "./service.isitup", "Sets the location of the service file")
+	svcPtr := flag.String("servicefile", "./service.isitup", "Sets the location of the service file - WARNING: Overrides the Setting in the config file.")
 	confPtr := flag.String("config", "./settings.toml", "Sets the location of the config file")
 	intPtr := flag.String("interval", "60", "Sets the Scan interval in seconds - WARNING: Overrides the Setting in the config file.")
 	flag.Parse()
