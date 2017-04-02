@@ -1,3 +1,6 @@
+// Thanks to William Kennedy
+// bill@ardanlabs.com
+
 package main
 
 import "log"

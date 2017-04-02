@@ -1,3 +1,4 @@
 TOKEN = ""
 RECEIVER = ""
 INTERVAL = "60"
+SERVICEFILE = "service.isitup"
