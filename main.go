@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"flag"
-	"github.com/spf13/viper"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -11,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/spf13/viper"
 )
 
 // Globals - is there a better way for this?
@@ -18,17 +19,17 @@ var receiver string
 var token string
 var interval string
 var service string
-var log_path string
-var conf_path string
+var logPath string
+var confPath string
 
 func main() {
 	// Init
-	init_flags()
+	initFlags()
 	enablelogging()
-	read_config()
+	readConfig()
 
 	// Check if there is a servicefile and let it rip
-	if servicefile_available() {
+	if servicefileAvailable() {
 		for {
 			Info.Println("Starting Scanning...")
 			go checkupness()
@@ -38,7 +39,7 @@ func main() {
 	}
 }
 
-func init_flags() {
+func initFlags() {
 	// All that command line arguments
 	logPtr := flag.String("logfile", "./isitup.log", "Sets the location of the logfile.")
 	svcPtr := flag.String("servicefile", "./service.isitup", "Sets the location of the service file - WARNING: Overrides the Setting in the config file.")
@@ -46,15 +47,15 @@ func init_flags() {
 	intPtr := flag.String("interval", "60", "Sets the Scan interval in seconds - WARNING: Overrides the Setting in the config file.")
 	flag.Parse()
 	// to the globals
-	log_path = *logPtr
+	logPath = *logPtr
 	service = *svcPtr
-	conf_path = *confPtr
+	confPath = *confPtr
 	interval = *intPtr
 
 }
 
-func read_config() {
-	viper.SetConfigFile(conf_path)
+func readConfig() {
+	viper.SetConfigFile(confPath)
 	err := viper.ReadInConfig()
 	if err != nil {
 		Error.Println("Could not open config file.. Are you sure it is there?")
@@ -80,7 +81,7 @@ func read_config() {
 
 func enablelogging() {
 	// Initializing Logging
-	file, err := os.OpenFile(log_path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
+	file, err := os.OpenFile(logPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
 	if err != nil {
 		Warning.Println("Could not open logfile..")
 	} else {
@@ -94,20 +95,19 @@ func enablelogging() {
 	}
 }
 
-func servicefile_available() bool {
+func servicefileAvailable() bool {
 	file, err := os.Open(service)
 	defer file.Close()
 	if err != nil {
 		Error.Println("Could not open service file. Exiting.")
 		return false
-	} else {
-		Info.Println("Opened service file.")
-		return true
 	}
+	Info.Println("Opened service file.")
+	return true
 
 }
 
-func send_message(mes string) {
+func sendMessage(mes string) {
 	url := "https://api.telegram.org/bot" + token + "/"
 	// Send message with a get request
 	res, err := http.Get(url + "sendMessage?text=" + mes + "&chat_id=" + receiver)
@@ -146,7 +146,7 @@ func checkupness() {
 			Warning.Println("#####################################")
 			Warning.Println("Service " + input[1] + " on " + input[0] + " is down.")
 			Warning.Println("#####################################")
-			send_message("Service " + input[1] + " on " + input[0] + " is down.")
+			sendMessage("Service " + input[1] + " on " + input[0] + " is down.")
 		} else {
 			Info.Println("Service " + input[1] + " on " + input[0] + " is up.")
 		}
