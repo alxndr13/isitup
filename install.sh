@@ -1,0 +1,8 @@
+#!/bin/bash
+echo 'Copying Servicefile to /etc/systemd/system/'
+sudo mv isitup.service /etc/systemd/system/
+echo 'You need the go runtime installed to build your Version of isitup.'
+echo 'trying to build...'
+go build
+echo 'reloading systemd daemon'
+sudo systemctl daemon-reload

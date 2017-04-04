@@ -20,8 +20,7 @@ Usage of ./isitup:
 
 - cd /opt
 - git clone https://github.com/alxndr13/isitup
-- Build your own Version with ``` go build ```.
-- ```cd isitup && sudo mv isitup.service /etc/systemd/system/```
+- ./install.sh
 
 ### settings.toml:
 - Enter the Access Token of your Telegram Bot
@@ -39,7 +38,7 @@ Example:
 
 ## Startup
 
-- ``` systemctl enable isitup && systemctl start isitup ``` 
+- ``` systemctl enable isitup && systemctl start isitup ```
 
 ### ToDo:
 - multiple receivers
