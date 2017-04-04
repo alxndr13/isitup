@@ -20,7 +20,7 @@ Usage of ./isitup:
 
 - cd /opt
 - git clone https://github.com/alxndr13/isitup
-- ./install.sh
+- chmod +x install.sh && ./install.sh
 
 ### settings.toml:
 - Enter the Access Token of your Telegram Bot
