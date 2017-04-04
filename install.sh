@@ -6,3 +6,6 @@ echo 'trying to build...'
 go build
 echo 'reloading systemd daemon'
 sudo systemctl daemon-reload
+echo 'Setting config Directory..'
+sudo mkdir -p /etc/isitup/
+sudo mv settings.toml /etc/isitup/

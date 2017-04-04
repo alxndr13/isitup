@@ -6,7 +6,7 @@ User=root
 Group=root
 PIDFile=/tmp/isitup.pid
 WorkingDirectory=/opt/isitup
-ExecStart=/bin/bash -c '/opt/isitup/isitup'
+ExecStart=/bin/bash -c '/opt/isitup/isitup -config="/etc/isitup/settings.toml"'
 Restart=on-failure
 
 [Install]
