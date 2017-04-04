@@ -2,7 +2,11 @@
 Description=isitup from github.com/alxndr13/isitup
 
 [Service]
-ExecStart=/opt/isitup/isitup
+User=root
+Group=root
+PIDFile=/tmp/isitup.pid
+WorkingDirectory=/opt/isitup
+ExecStart=/bin/bash -c '/opt/isitup/isitup'
 Restart=on-failure
 
 [Install]
