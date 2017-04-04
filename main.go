@@ -137,7 +137,7 @@ func checkupness() {
 		if strings.HasPrefix(scanner.Text(), "#") {
 			continue // if it is a comment, then check the next line
 		}
-		input := strings.Split(scanner.Text(), "-")
+		input := strings.Split(scanner.Text(), "|")
 		// This is where the magic happens
 		_, err2 := net.Dial("tcp", input[0])
 		Info.Println("Checking " + input[1] + "..")
