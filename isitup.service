@@ -1,0 +1,9 @@
+[Unit]
+Description=isitup from github.com/alxndr13/isitup
+
+[Service]
+ExecStart=/opt/isitup/isitup
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
