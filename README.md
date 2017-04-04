@@ -18,9 +18,14 @@ Usage of ./isitup:
 
 # Setup
 
+- cd /opt
+- git clone https://github.com/alxndr13/isitup
+- Build your own Version with ``` go build ```.
+- ```cd isitup && sudo mv isitup.service /etc/systemd/system/```
+
 ### settings.toml:
 - Enter the Access Token of your Telegram Bot
-- Enter the Chat ID of the person, who should get notifications (You have to figure out, how to get this yourself. :p - You have to Message the Bot first [/start], before you can receive Messages.) 
+- Enter the Chat ID of the person, who should get notifications (You have to figure out, how to get this yourself. :p - You have to Message the Bot first [/start], before you can receive Messages.)
 
 ### service.isitup
 - Enter IP Adress as well as the Port, line after line
@@ -32,6 +37,10 @@ Example:
 8.8.8.8:53-Google DNS
 ```
 
+## Startup
+
+- ``` systemctl enable isitup && systemctl start isitup ``` 
+
 ### ToDo:
 - multiple receivers
-- ..? 
+- ..?
