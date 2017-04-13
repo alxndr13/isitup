@@ -22,6 +22,7 @@ Usage of ./isitup:
 
 - cd /opt
 - git clone https://github.com/alxndr13/isitup
+- cd isitup/
 - chmod +x install.sh && ./install.sh
 
 ### settings.toml:
