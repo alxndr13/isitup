@@ -1,6 +1,8 @@
 # isitup
 Tool written in Go, which checks the Availability of defined Services or Resources - sends a Message via a Telegram Bot, if a service is offline
 
+Sends only one Message in 10 Minutes if a Service is down at multiple scans. When its up again, you'll receive a Message.
+
 # Usage
 ```
 Usage of ./isitup:
@@ -42,4 +44,6 @@ Example:
 
 ### ToDo:
 - multiple receivers
+- udp?
 - ..?
+
