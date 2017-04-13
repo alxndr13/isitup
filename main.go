@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"flag"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net"
@@ -122,7 +121,6 @@ func evaluateSending(mode string, service string) bool {
 			// iterate through the map
 			for k, v := range sentMessage {
 				if k == service {
-					fmt.Println("k is in the map")
 					t, _ := time.Parse(time.RFC1123, v)
 					if time.Since(t) <= time.Duration(time.Minute*10) {
 						Warning.Println("For Service " + service + " was already a notification sent in the last 15 seconds.. Not sending.")
