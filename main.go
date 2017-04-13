@@ -3,6 +3,8 @@ package main
 import (
 	"bufio"
 	"flag"
+	"fmt"
+	"io"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -21,6 +23,7 @@ var interval string
 var service string
 var logPath string
 var confPath string
+var sentMessage = make(map[string]string)
 
 func main() {
 	// Init
@@ -69,9 +72,13 @@ func readConfig() {
 		if len(interval) == 0 {
 			interval = viper.GetString("INTERVAL")
 			Info.Println("Scan Interval is: " + interval)
+		} else {
+			Info.Println("Scan Interval is: " + interval)
 		}
 		if len(service) == 0 {
 			service = viper.GetString("SERVICEFILE")
+			Info.Println("Servicefile path is: " + service)
+		} else {
 			Info.Println("Servicefile path is: " + service)
 		}
 
@@ -85,7 +92,8 @@ func enablelogging() {
 	if err != nil {
 		Warning.Println("Could not open logfile..")
 	} else {
-		InitLogging(ioutil.Discard, file, file, file)
+		multi := io.MultiWriter(file, os.Stdout)
+		InitLogging(ioutil.Discard, multi, multi, multi)
 		// Startup Message
 		Info.Println("#####################################")
 		Info.Println("Starting Isitup")
@@ -107,7 +115,50 @@ func servicefileAvailable() bool {
 
 }
 
-func sendMessage(mes string) {
+// i did not come up with a better solution atm
+func evaluateSending(mode string, service string) bool {
+	if mode == "down" {
+		if len(sentMessage) > 0 {
+			// iterate through the map
+			for k, v := range sentMessage {
+				if k == service {
+					fmt.Println("k is in the map")
+					t, _ := time.Parse(time.RFC1123, v)
+					if time.Since(t) <= time.Duration(time.Minute*10) {
+						Warning.Println("For Service " + service + " was already a notification sent in the last 15 seconds.. Not sending.")
+						return false
+					}
+					d := time.Now()
+					f := d.Format(time.RFC1123)
+					sentMessage[service] = f
+					return true
+				}
+				d := time.Now()
+				f := d.Format(time.RFC1123)
+				sentMessage[service] = f
+				return true
+
+			}
+		}
+		d := time.Now()
+		f := d.Format(time.RFC1123)
+		sentMessage[service] = f
+		return true
+	} else if mode == "up" {
+		if len(sentMessage) > 0 {
+			for k := range sentMessage {
+				if k == service {
+					delete(sentMessage, service)
+					return true
+				}
+				return false
+			}
+		}
+	}
+	return false
+}
+
+func sendMessage(mes string, service string) {
 	url := "https://api.telegram.org/bot" + token + "/"
 	// Send message with a get request
 	res, err := http.Get(url + "sendMessage?text=" + mes + "&chat_id=" + receiver)
@@ -120,7 +171,6 @@ func sendMessage(mes string) {
 			Info.Println("Send Message to: " + receiver)
 		}
 	}
-
 }
 
 func checkupness() {
@@ -146,8 +196,13 @@ func checkupness() {
 			Warning.Println("#####################################")
 			Warning.Println("Service " + input[1] + " on " + input[0] + " is down.")
 			Warning.Println("#####################################")
-			sendMessage("Service " + input[1] + " on " + input[0] + " is down.")
+			if evaluateSending("down", input[1]) {
+				sendMessage("Service "+input[1]+" on "+input[0]+" is down.", input[1])
+			}
 		} else {
+			if evaluateSending("up", input[1]) {
+				sendMessage("Service "+input[1]+" on "+input[0]+" is up.", input[1])
+			}
 			Info.Println("Service " + input[1] + " on " + input[0] + " is up.")
 		}
 	}
